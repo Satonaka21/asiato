@@ -41,6 +41,8 @@ struct ViewingView: View {
 struct PostingView: View {
     @State private var sentence = ""
     @ObservedObject var postInfomation = PostInfomation()
+    @ObservedObject private var locationViewModel = LocationViewModel()
+    
     @State var imageData: Data = .init(capacity:0)
     
     var body: some View {
@@ -56,27 +58,10 @@ struct PostingView: View {
                 HStack{
                     Spacer()
                     Button("post", action: {
-                        postInfomation.postInfo(imageData: imageData)
-                        let storage = Storage.storage()
-                        let storageRef = storage.reference(forURL: "gs://toratora-dev.appspot.com")
-                        let randomStr = randomString(length: 20)
-                        let imageRef = storageRef.child("pic/" + randomStr + ".png")
-
-                        let uploadTask = imageRef.putData(imageData)
-                        var downloadURL: URL?
-                        uploadTask.observe(.success){ _ in
-                            imageRef.downloadURL{ url, error in
-                                if let url = url {
-                                    downloadURL = url
-                                }
-                            }
-                        }
-                        
-                        uploadTask.observe(.failure){ snapshot in
-                            if let message = snapshot.error?.localizedDescription{
-                                print(message)
-                            }
-                        }
+                        postInfomation.postInfo(
+                            imageData: imageData,
+                            coordinate: locationViewModel.getLocation()
+                        )
                     }).buttonStyle(.borderedProminent).alert( isPresented: $postInfomation.isNotSelected) {
                         Alert(title: Text("Please take a picture."))
                     }
@@ -91,47 +76,35 @@ struct PostingView: View {
 struct CameraView: View {
     @Binding var imageData: Data
     @State var source:UIImagePickerController.SourceType = .photoLibrary
-
-    @State var isActionSheet = false
     @State var isImagePicker = false
     
     var body: some View {
         NavigationView{
-            VStack(spacing:0){
-                ZStack{
-                    NavigationLink(
-                        destination: Imagepicker(show: $isImagePicker, image: $imageData, sourceType: source),
-                        isActive:$isImagePicker,
-                        label: {
-                            Text("")
-                        })
-                    VStack{
+            NavigationLink(
+                destination: Imagepicker(show: $isImagePicker, image: $imageData, sourceType: source),
+                isActive:$isImagePicker,
+                label: {
+                    Button(action: {
+                        self.source = .camera
+                        self.isImagePicker.toggle()
+                    }, label: {
                         if imageData.count != 0{
                             Image(uiImage: UIImage(data: self.imageData)!)
                                 .resizable()
-                                .aspectRatio(contentMode: .fill)
-                                .frame(height: CGFloat(UIScreen.main.bounds.height / 2))
+                                .scaledToFill()
+                                .clipped()
+                                .frame(width: UIScreen.main.bounds.width, height: CGFloat(UIScreen.main.bounds.height / 2))
+                        } else {
+                            Image(systemName: "camera")
+                                .resizable()
+                                .scaledToFit()
+                                .clipped()
+                                .frame(width: UIScreen.main.bounds.width, height: CGFloat(UIScreen.main.bounds.height / 2))
                         }
-                        HStack(spacing:30){
-                            Button(action: {
-                                    self.source = .photoLibrary
-                                    self.isImagePicker.toggle()
-                            }, label: {
-                                Text("Upload")
-                            })
-                            Button(action: {
-                                    self.source = .camera
-                                    self.isImagePicker.toggle()
-                            }, label: {
-                                Text("Take Photo")
-                            })
-                        }
-                    }
+                    })
                 }
-            }
+            )
         }
-        .ignoresSafeArea(.all, edges: .top)
-        .background(Color.primary.opacity(0.06).ignoresSafeArea(.all, edges: .all))
     }
 }
 
