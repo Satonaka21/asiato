@@ -4,6 +4,8 @@ import CoreLocation //位置情報を取得する
 import PhotosUI
 import AVFoundation
 
+import FirebaseStorage
+
 struct ViewingView: View {
     
     @State private var userTrackingMode: MapUserTrackingMode = .follow
@@ -12,6 +14,7 @@ struct ViewingView: View {
     @ObservedObject private var postViewModel = PostViewModel()
     
     private let pinConfig = PinConfig()
+    private let test = ViewControllerFireStore()
     private let annotations: [Annotation] = [
         Annotation(id: "kari", img_url: "gs://", coordinate: CLLocationCoordinate2D(latitude: 35, longitude: 135))
     ]
@@ -28,6 +31,9 @@ struct ViewingView: View {
                 }
             }
             ).edgesIgnoringSafeArea(.all)
+            Button("kuso"){
+                test.viewDidLoad()
+            }
         }
     }
 }
@@ -51,6 +57,26 @@ struct PostingView: View {
                     Spacer()
                     Button("post", action: {
                         postInfomation.postInfo(imageData: imageData)
+                        let storage = Storage.storage()
+                        let storageRef = storage.reference(forURL: "gs://toratora-dev.appspot.com")
+                        let randomStr = randomString(length: 20)
+                        let imageRef = storageRef.child("pic/" + randomStr + ".png")
+
+                        let uploadTask = imageRef.putData(imageData)
+                        var downloadURL: URL?
+                        uploadTask.observe(.success){ _ in
+                            imageRef.downloadURL{ url, error in
+                                if let url = url {
+                                    downloadURL = url
+                                }
+                            }
+                        }
+                        
+                        uploadTask.observe(.failure){ snapshot in
+                            if let message = snapshot.error?.localizedDescription{
+                                print(message)
+                            }
+                        }
                     }).buttonStyle(.borderedProminent).alert( isPresented: $postInfomation.isNotSelected) {
                         Alert(title: Text("Please take a picture."))
                     }
@@ -122,4 +148,9 @@ struct kariView: View{
             }.navigationTitle("")
         }
     }
+}
+
+func randomString(length: Int) -> String {
+    let characters = "abcdefghijklmnopqrstuvwsyzABCDFGHIJKLMNOPQRSTUVWYZ0123456789"
+    return  String((0..<length).map{  _ in characters.randomElement()! })
 }

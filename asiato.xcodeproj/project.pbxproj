@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5CA1A3B128C5FDC5001BF203 /* firestore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CA1A3B028C5FDC4001BF203 /* firestore.swift */; };
+		5CA1A3B228C5FDC5001BF203 /* firestore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CA1A3B028C5FDC4001BF203 /* firestore.swift */; };
 		84008B6028C4C4DD008BE9BF /* PostInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84008B5F28C4C4DD008BE9BF /* PostInfo.swift */; };
 		84008B6128C4C4DD008BE9BF /* PostInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84008B5F28C4C4DD008BE9BF /* PostInfo.swift */; };
 		841E44D928BCD72600AE6404 /* asiatoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841E44C928BCD72000AE6404 /* asiatoApp.swift */; };
@@ -44,6 +46,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		5CA1A3B028C5FDC4001BF203 /* firestore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = firestore.swift; sourceTree = "<group>"; };
 		84008B5F28C4C4DD008BE9BF /* PostInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostInfo.swift; sourceTree = "<group>"; };
 		841E44C928BCD72000AE6404 /* asiatoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = asiatoApp.swift; sourceTree = "<group>"; };
 		841E44CA28BCD72000AE6404 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -109,6 +112,7 @@
 			children = (
 				841E44C928BCD72000AE6404 /* asiatoApp.swift */,
 				841E44CA28BCD72000AE6404 /* ContentView.swift */,
+				5CA1A3B028C5FDC4001BF203 /* firestore.swift */,
 				841E44CB28BCD72600AE6404 /* Assets.xcassets */,
 				84831A8428BE009E00BAB8E4 /* LocationViewModel.swift */,
 				84832ED528C03159007FE746 /* ContentNavigator.swift */,
@@ -267,6 +271,7 @@
 				848765E828C4298200EAB4F4 /* mapAnnotation.swift in Sources */,
 				841E44DB28BCD72600AE6404 /* ContentView.swift in Sources */,
 				84831A8528BE009E00BAB8E4 /* LocationViewModel.swift in Sources */,
+				5CA1A3B128C5FDC5001BF203 /* firestore.swift in Sources */,
 				848765EB28C43BEC00EAB4F4 /* FiresStoreManager.swift in Sources */,
 				84832ED928C036E9007FE746 /* ImagePicker.swift in Sources */,
 				84008B6028C4C4DD008BE9BF /* PostInfo.swift in Sources */,
@@ -283,6 +288,7 @@
 				848765E928C4298200EAB4F4 /* mapAnnotation.swift in Sources */,
 				841E44DC28BCD72600AE6404 /* ContentView.swift in Sources */,
 				84831A8628BE009E00BAB8E4 /* LocationViewModel.swift in Sources */,
+				5CA1A3B228C5FDC5001BF203 /* firestore.swift in Sources */,
 				848765EC28C43BEC00EAB4F4 /* FiresStoreManager.swift in Sources */,
 				84832EDA28C036E9007FE746 /* ImagePicker.swift in Sources */,
 				84008B6128C4C4DD008BE9BF /* PostInfo.swift in Sources */,
