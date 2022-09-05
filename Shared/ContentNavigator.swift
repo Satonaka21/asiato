@@ -2,12 +2,10 @@
 import SwiftUI
 
 struct SwitchingView: View{
-    
-    @StateObject var locationViewModel = LocationViewModel()
-    
+
     var body: some View{
         TabView{
-            ViewingView(authorizationStatus: locationViewModel.$authorizationStatus, publishedRegion: locationViewModel.$publishedRegion).tabItem {
+            ViewingView().tabItem {
                 Image(systemName: "map")
             }
             PostingView().tabItem {

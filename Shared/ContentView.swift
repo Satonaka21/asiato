@@ -9,9 +9,9 @@ import FirebaseStorage
 struct ViewingView: View {
     
     @State private var userTrackingMode: MapUserTrackingMode = .follow
-    @Binding var authorizationStatus: CLAuthorizationStatus
-    @Binding var publishedRegion: MKCoordinateRegion
+    
     @ObservedObject private var postViewModel = PostViewModel()
+    @ObservedObject private var locationViewModel = LocationViewModel()
     
     private let pinConfig = PinConfig()
     private let test = ViewControllerFireStore()
@@ -21,7 +21,7 @@ struct ViewingView: View {
     
     var body: some View {
         ZStack{
-            Map(coordinateRegion: $publishedRegion,
+            Map(coordinateRegion: $locationViewModel.region,
                 interactionModes: .all,
                 showsUserLocation: true,
                 userTrackingMode: $userTrackingMode,

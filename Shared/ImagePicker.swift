@@ -7,12 +7,10 @@ struct Imagepicker : UIViewControllerRepresentable {
     var sourceType:UIImagePickerController.SourceType
  
     func makeCoordinator() -> Imagepicker.Coodinator {
-        
         return Imagepicker.Coordinator(parent: self)
     }
       
     func makeUIViewController(context: UIViewControllerRepresentableContext<Imagepicker>) -> UIImagePickerController {
-        
         let controller = UIImagePickerController()
         controller.sourceType = sourceType
         controller.delegate = context.coordinator
@@ -24,9 +22,7 @@ struct Imagepicker : UIViewControllerRepresentable {
     }
     
     class Coodinator: NSObject,UIImagePickerControllerDelegate,UINavigationControllerDelegate {
-        
         var parent : Imagepicker
-        
         init(parent : Imagepicker){
             self.parent = parent
         }

@@ -10,6 +10,8 @@ class PostInfomation: ObservableObject{
             ciImage = CIImage(data: imageData) ?? nil
             print(ciImage ?? "cantGet:CIImage")
             print(ciImage?.properties ?? "cantGet:properties")
+            
+            
         }else{
             isNotSelected = true
         }
