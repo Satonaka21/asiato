@@ -8,13 +8,8 @@ class PostInfomation: ObservableObject{
     var ciImage: CIImage? = nil
     
     func postInfo(imageData: Data, coordinate: CLLocationCoordinate2D, text: String) {
-        let nowDate = Date()
         let setPostData = SetPostData()
         let postData = PostData()
-        
-        print(imageData.count)
-        print(coordinate)
-        print(type(of:nowDate))
         
         if(imageData.count != 0){
             // fireStorageに画像をアップロード
@@ -24,10 +19,22 @@ class PostInfomation: ObservableObject{
             let imageRef = storageRef.child("pic/" + randomStr + ".png")
             let uploadTask = imageRef.putData(imageData)
             var downloadURL: URL?
+            
             uploadTask.observe(.success){ _ in
                 imageRef.downloadURL{ url, error in
                     if let url = url {
                         downloadURL = url
+                        let img_url = downloadURL?.absoluteString ?? ""
+                        let postData = postData.genePostData(
+                            datetime: Timestamp(date: Date()),
+                            latitude: String(coordinate.latitude),
+                            longitude: String(coordinate.longitude),
+                            img_url: img_url,
+                            text: text,
+                            userName: "watasi2022",
+                            weather: "none"
+                        )
+                        setPostData.post(postData: postData)
                     } else{
                         print("error:\(error)")
                     }
@@ -39,20 +46,6 @@ class PostInfomation: ObservableObject{
                     print(message)
                 }
             }
-            
-            print(downloadURL)
-            
-            let img_url = downloadURL?.absoluteString ?? ""
-            
-            setPostData.post(postData: postData.genePostData(
-                datetime: Timestamp(date: Date()),
-                latitude: coordinate.latitude,
-                longitude: coordinate.longitude,
-                img_url: img_url,
-                text: text,
-                userName: "watasi2022",
-                weather: "none"
-            ))
             
         }else{
             isNotSelected = true
@@ -67,6 +60,7 @@ class SetPostData{
     
     public func post(postData: [String: Any]) {
         //setDataメソッドを使うことでFirestoreへのデータ追加が可能
+        print(postData)
         saveDocument.setData(postData) { err in
             if let err = err {
                 print("Error writing document: \(err)")
@@ -79,8 +73,8 @@ class SetPostData{
 
 class PostData{
     func genePostData(datetime: Timestamp,
-                      latitude: Double,
-                      longitude: Double,
+                      latitude: String,
+                      longitude: String,
                       img_url: String,
                       text: String,
                       userName: String,
