@@ -62,7 +62,8 @@ struct PostingView: View {
                     Button("post", action: {
                         postInfomation.postInfo(
                             imageData: imageData,
-                            coordinate: locationViewModel.getLocation()
+                            coordinate: locationViewModel.getLocation(),
+                            text: sentence
                         )
                     }).buttonStyle(.borderedProminent).alert( isPresented: $postInfomation.isNotSelected) {
                         Alert(title: Text("Please take a picture."))
