@@ -34,7 +34,7 @@ struct ViewingView: View {
             Button("kuso"){
                 
                 ViewController().viewDidLoad()
-                test.fetchDocumentData()
+                test.fetchDocumentDataTimesort()
             }
         }
     }
