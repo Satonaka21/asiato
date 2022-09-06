@@ -24,7 +24,7 @@ struct Hobby {
     var year: Int
 }
 
-//取得するデータを宣言
+//取得するデータを宣言（これも忘れない
 struct Report: Codable{
     var datetime: Date
     var img_url: String
@@ -39,10 +39,14 @@ class ViewControllerFireStore: UIViewController{
 
     public func fetchDocumentData() {
         let db = Firestore.firestore()
+        //現在地に変える
+        let latitude: Double = 34.4827065
+        let longitude: Double = 136.8254649
+        
         print("関数呼び出し")
         db.collection("post").getDocuments  {(_snapShot, _error) in
             if let snapShot = _snapShot {
-                //取得した値を変数にlistとして格納する
+                //取得した値を変数にlistとして格納する（全選択）
                 let menuList = snapShot.documents.map {menu -> Report in
                     let data = menu.data()
                     let datetime = data["datetime"] as! Timestamp
@@ -55,9 +59,25 @@ class ViewControllerFireStore: UIViewController{
                     let weather: String = data["weather"] as! String
                     return Report(datetime: date, img_url: img_url, latitude: latitude, longitude: longitude, text: text, user_name: user_name, weather: weather)
                 }
-                print(menuList)
+               dump(menuList)
+//                print(menuList)
+                //filterをかけた後の処理
+                let lat_min: Double = latitude - 0.1
+                let lat_max: Double = latitude + 0.1
+                let long_min: Double = longitude - 0.1
+                let long_max: Double = longitude + 0.1
+                
+                let postList = menuList.filter{ document in
+                    let lat: Double = Double(document.latitude) ?? 0
+                    let long: Double = Double(document.longitude) ?? 0
+                    return lat_min < lat && lat < lat_max && long_min < long && long < long_max
+
+                }
+                dump(postList)
+
                 //値は配列になっている。取得は、「配列[index].要素名」で取得することができる。
                 print(menuList[0].datetime)
+                
             }else {
                 print("Data Not Found")
             }

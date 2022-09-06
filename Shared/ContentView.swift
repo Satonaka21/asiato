@@ -32,9 +32,9 @@ struct ViewingView: View {
             }
             ).edgesIgnoringSafeArea(.all)
             Button("kuso"){
-                let val = test.fetchDocumentData()
-                print("ContentView")
-                print(val)
+                
+                ViewController().viewDidLoad()
+                test.fetchDocumentData()
             }
         }
     }
