@@ -32,7 +32,9 @@ struct ViewingView: View {
             }
             ).edgesIgnoringSafeArea(.all)
             Button("kuso"){
-                test.viewDidLoad()
+                let val = test.fetchDocumentData()
+                print("ContentView")
+                print(val)
             }
         }
     }
@@ -127,3 +129,4 @@ func randomString(length: Int) -> String {
     let characters = "abcdefghijklmnopqrstuvwsyzABCDFGHIJKLMNOPQRSTUVWYZ0123456789"
     return  String((0..<length).map{  _ in characters.randomElement()! })
 }
+
