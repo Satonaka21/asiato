@@ -27,12 +27,18 @@ struct ViewingView: View {
                 userTrackingMode: $userTrackingMode,
                 annotationItems: annotations,
                 annotationContent: { (annotation) in MapAnnotation(coordinate: annotation.coordinate) {
-                PinBase().offset(x: 0, y: -0.5*(pinConfig.frameSize + pinConfig.tailHeight))
+                PinBase(
+                    img_url: "https://firebasestorage.googleapis.com/v0/b/toratora-dev.appspot.com/o/pic%2Ftest.png?alt=media&token=6a9c744a-1130-4eae-9a7e-d61f819df051",
+                    datetime: "2022/09/01",
+                    text: "楽しい！",
+                    userName: "watasi2022",
+                    weather: "none"
+                )
+                    .offset(x: 0, y: -0.5*(pinConfig.frameSize + pinConfig.tailHeight))
                 }
             }
             ).edgesIgnoringSafeArea(.all)
             Button("kuso"){
-                
                 ViewController().viewDidLoad()
                 test.fetchDocumentDataTimesort()
             }
