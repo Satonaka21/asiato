@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>349827093939-ao4j7ja178ut8e1aoejuf9af1cfujacp.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.349827093939-ao4j7ja178ut8e1aoejuf9af1cfujacp</string>
+	<key>API_KEY</key>
+	<string>AIzaSyAJapFc_I9LQ_4SsoT8L7b7LFhOYALEHDk</string>
+	<key>GCM_SENDER_ID</key>
+	<string>349827093939</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>toradatora.asiato</string>
+	<key>PROJECT_ID</key>
+	<string>toratora-dev</string>
+	<key>STORAGE_BUCKET</key>
+	<string>toratora-dev.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:349827093939:ios:4bee37a11890c76b00a7c6</string>
+	<key>DATABASE_URL</key>
+	<string>https://toratora-dev-default-rtdb.firebaseio.com</string>
+</dict>
+</plist>

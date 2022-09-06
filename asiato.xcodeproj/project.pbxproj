@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		5CA1A3B128C5FDC5001BF203 /* firestore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CA1A3B028C5FDC4001BF203 /* firestore.swift */; };
 		5CA1A3B228C5FDC5001BF203 /* firestore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CA1A3B028C5FDC4001BF203 /* firestore.swift */; };
+		5CA1A3B828C6D11F001BF203 /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 5CA1A3B728C6D11F001BF203 /* FirebaseFirestoreSwift */; };
 		84008B6028C4C4DD008BE9BF /* PostInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84008B5F28C4C4DD008BE9BF /* PostInfo.swift */; };
 		84008B6128C4C4DD008BE9BF /* PostInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84008B5F28C4C4DD008BE9BF /* PostInfo.swift */; };
 		841E44D928BCD72600AE6404 /* asiatoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841E44C928BCD72000AE6404 /* asiatoApp.swift */; };
@@ -77,6 +78,7 @@
 				841E44F028BCE1C900AE6404 /* FirebaseStorage in Frameworks */,
 				848765F328C44FCC00EAB4F4 /* FirebaseFirestore in Frameworks */,
 				848765F128C44FCC00EAB4F4 /* FirebaseDatabaseSwift in Frameworks */,
+				5CA1A3B828C6D11F001BF203 /* FirebaseFirestoreSwift in Frameworks */,
 				848765F528C44FCC00EAB4F4 /* FirebaseFirestoreCombine-Community in Frameworks */,
 				841E44F528BCE37A00AE6404 /* FirebaseFirestore in Frameworks */,
 				84831A8328BDE6B300BAB8E4 /* MapKit.framework in Frameworks */,
@@ -184,6 +186,7 @@
 				848765F628C44FCC00EAB4F4 /* FirebaseFirestoreSwift */,
 				848765F828C44FCC00EAB4F4 /* FirebaseStorage */,
 				848765FA28C44FCC00EAB4F4 /* FirebaseStorageCombine-Community */,
+				5CA1A3B728C6D11F001BF203 /* FirebaseFirestoreSwift */,
 			);
 			productName = "asiato (iOS)";
 			productReference = 841E44D028BCD72600AE6404 /* asiato.app */;
@@ -237,6 +240,7 @@
 				841E44EA28BCE1C900AE6404 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				841E44F128BCE37A00AE6404 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				848765ED28C44FCB00EAB4F4 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				5CA1A3B628C6D11E001BF203 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			productRefGroup = 841E44D128BCD72600AE6404 /* Products */;
 			projectDirPath = "";
@@ -578,6 +582,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		5CA1A3B628C6D11E001BF203 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk.git";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
 		841E44EA28BCE1C900AE6404 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
@@ -605,6 +617,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		5CA1A3B728C6D11F001BF203 /* FirebaseFirestoreSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5CA1A3B628C6D11E001BF203 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestoreSwift;
+		};
 		841E44EB28BCE1C900AE6404 /* FirebaseAuth */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 841E44EA28BCE1C900AE6404 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
