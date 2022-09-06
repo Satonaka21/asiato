@@ -18,18 +18,99 @@ struct PinConfig{
 
 struct PinBase: View{
     let pinConfig = PinConfig()
+    var img_url: String
+    var datetime: String
+    var text: String
+    var userName: String
+    var weather: String
     
+    @State var isActive = false
+
     var body: some View{
-        VStack(spacing: 0){
-            ZStack{
-                RoundedRectangle(cornerRadius: pinConfig.frameRadius)
+        
+        Button(action: {
+            isActive = true
+        }, label: {
+            VStack(spacing: 0){
+                ZStack{
+                    RoundedRectangle(cornerRadius: pinConfig.frameRadius)
+                    .fill(Color.blue)
+                    .frame(width: pinConfig.frameSize, height: pinConfig.frameSize)
+                    URLImage(url: img_url)
+                }
+            Triangle()
                 .fill(Color.blue)
-                .frame(width: pinConfig.frameSize, height: pinConfig.frameSize)
-                URLImage(url:"https://firebasestorage.googleapis.com/v0/b/toratora-dev.appspot.com/o/pic%2Ftest.png?alt=media&token=6a9c744a-1130-4eae-9a7e-d61f819df051")
+                .frame(width: pinConfig.tailWidth, height: pinConfig.tailHeight)
             }
-        Triangle()
-            .fill(Color.blue)
-            .frame(width: pinConfig.tailWidth, height: pinConfig.tailHeight)
+        }).fullScreenCover(isPresented: $isActive) {
+            PopupView(
+                img_url: img_url,
+                datetime: datetime,
+                text: text,
+                userName: userName,
+                weather: weather,
+                isActive: $isActive
+            )
+        }
+        
+    }
+}
+
+struct PopupView: View {
+    var img_url: String
+    var datetime: String
+    var text: String
+    var userName: String
+    var weather: String
+    @Binding var isActive: Bool
+
+    var body: some View{
+        ZStack{
+            VStack{
+                AsyncImage(url: URL(string: img_url)) { image in
+                    image
+                        .resizable()
+                        .frame(width: UIScreen.main.bounds.width, height: CGFloat(UIScreen.main.bounds.height / 2))
+                        .scaledToFit()
+                } placeholder: {
+                    Image(systemName: "slowmo")
+                        .resizable()
+                        .frame(width: UIScreen.main.bounds.width, height: CGFloat(UIScreen.main.bounds.height / 2))
+                        .scaledToFit()
+                }
+                
+                
+                HStack(){
+                    Spacer().frame(width: 5)
+                    Text(userName)
+                    Spacer()
+                    Text(datetime).foregroundColor(Color.black)
+                    Text(weather).foregroundColor(Color.black)
+                    Spacer().frame(width: 5)
+                }
+                
+                HStack(){
+                    Spacer().frame(width: 5)
+                    Text(text).foregroundColor(Color.black)
+                    Spacer()
+                }
+                Spacer()
+            }
+            VStack{
+                Spacer().frame(height: 5)
+                HStack{
+                    Spacer().frame(width: 5)
+                    Button(action: {
+                        print(UIScreen.main.bounds.width, UIScreen.main.bounds.height)
+                        print("pushed!")
+                        isActive = false
+                    }, label: {
+                        Image(systemName: "xmark.circle")
+                    })
+                    Spacer()
+                }
+                Spacer()
+            }
         }
     }
 }

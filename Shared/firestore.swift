@@ -77,7 +77,7 @@ class ViewControllerFireStore: UIViewController{
 
                 //値は配列になっている。取得は、「配列[index].要素名」で取得することができる。
                 print(menuList[0].datetime)
-                
+                print(type(of: postList))
             }else {
                 print("Data Not Found")
             }
