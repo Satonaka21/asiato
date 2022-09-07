@@ -11,7 +11,7 @@ import FirebaseCore
 import FirebaseFirestore
 import FirebaseFirestoreSwift
 import AVFoundation
-
+import SwiftUI
 
 struct Person {
     var name: String
@@ -25,7 +25,8 @@ struct Hobby {
 }
 
 //取得するデータを宣言（これも忘れない
-struct Report: Codable{
+struct Report: Codable, Identifiable{
+    var id = UUID()
     var datetime: Date
     var img_url: String
     var latitude: String
@@ -54,14 +55,16 @@ class DateUtils {
 }
 
 class ViewControllerFireStore: UIViewController{
-
-    public func fetchDocumentData() {
+    @State var postList:[Report] = []
+    
+    public func fetchDocumentData(){
         let db = Firestore.firestore()
         //現在地に変える
         let latitude: Double = 34.4827065
         let longitude: Double = 136.8254649
         
-              
+        var postList:[Report] = []
+        
         db.collection("post").getDocuments  {(_snapShot, _error) in
             if let snapShot = _snapShot {
                 //取得した値を変数にlistとして格納する（全選択）
@@ -85,17 +88,16 @@ class ViewControllerFireStore: UIViewController{
                 let long_min: Double = longitude - 0.1
                 let long_max: Double = longitude + 0.1
                 
-                let postList = menuList.filter{ document in
+                postList = menuList.filter{ document in
                     let lat: Double = Double(document.latitude) ?? 0
                     let long: Double = Double(document.longitude) ?? 0
                     return lat_min < lat && lat < lat_max && long_min < long && long < long_max
-
                 }
-                dump(postList)
-
+//                dump(postList)
                 //値は配列になっている。取得は、「配列[index].要素名」で取得することができる。
                 print(menuList[0].datetime)
                 print(type(of: postList))
+                
             }else {
                 print("Data Not Found")
             }

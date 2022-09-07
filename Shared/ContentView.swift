@@ -13,11 +13,19 @@ struct ViewingView: View {
     @ObservedObject private var postViewModel = PostViewModel()
     @ObservedObject private var locationViewModel = LocationViewModel()
     
+    @Binding public var postList: [Report]
+    
+    private let viewControllerFireStore = ViewControllerFireStore()
     private let pinConfig = PinConfig()
     private let test = ViewControllerFireStore()
-    private let annotations: [Annotation] = [
-        Annotation(id: "kari", img_url: "gs://", coordinate: CLLocationCoordinate2D(latitude: 35, longitude: 135))
-    ]
+    
+    func dateToString(date: Date) -> String{
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy/MM/dd HH:mm:ss"
+        return dateFormatter.string(from: date)
+    }
+    
+//    private let annotations: [Report] = viewControllerFireStore.postList
     
     var body: some View {
         ZStack{
@@ -25,22 +33,26 @@ struct ViewingView: View {
                 interactionModes: .all,
                 showsUserLocation: true,
                 userTrackingMode: $userTrackingMode,
-                annotationItems: annotations,
-                annotationContent: { (annotation) in MapAnnotation(coordinate: annotation.coordinate) {
-                PinBase(
-                    img_url: "https://firebasestorage.googleapis.com/v0/b/toratora-dev.appspot.com/o/pic%2Ftest.png?alt=media&token=6a9c744a-1130-4eae-9a7e-d61f819df051",
-                    datetime: "2022/09/01",
-                    text: "楽しい！",
-                    userName: "watasi2022",
-                    weather: "none"
-                )
-                    .offset(x: 0, y: -0.5*(pinConfig.frameSize + pinConfig.tailHeight))
+                annotationItems: postList,
+                annotationContent: { (annotation) in MapAnnotation(coordinate: CLLocationCoordinate2D(
+                    latitude: Double(annotation.latitude) ?? 35.0,
+                    longitude: Double(annotation.longitude) ?? 135.0
+                )) {
+                    PinBase(
+                        img_url: annotation.img_url,
+                        datetime: dateToString(date: annotation.datetime),
+                        text: annotation.text,
+                        userName: annotation.user_name,
+                        weather: annotation.weather
+                    ).offset(x: 0, y: -0.5*(pinConfig.frameSize + pinConfig.tailHeight))
                 }
-            }
+              }
             ).edgesIgnoringSafeArea(.all)
-            Button("kuso"){
-                ViewController().viewDidLoad()
-                test.fetchDocumentDataTimesort()
+            VStack {
+                Button("kuso"){
+                    ViewController().viewDidLoad()
+                    test.fetchDocumentDataTimesort()
+                }
             }
         }
     }

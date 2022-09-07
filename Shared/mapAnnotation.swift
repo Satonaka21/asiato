@@ -2,11 +2,16 @@ import CoreLocation
 import SwiftUI
 import Foundation
 
-struct Annotation: Identifiable{
-    let id: String
-    let img_url: String
-    let coordinate: CLLocationCoordinate2D
-}
+//struct Annotation: Identifiable{
+//    var id = UUID()
+//    var datetime: Date
+//    var img_url: String
+//    var latitude: String
+//    var longitude: String
+//    var text: String
+//    var user_name: String
+//    var weather: String
+//}
 
 struct PinConfig{
     let frameRadius: CGFloat = 10
@@ -70,12 +75,12 @@ struct PopupView: View {
                 AsyncImage(url: URL(string: img_url)) { image in
                     image
                         .resizable()
-                        .frame(width: UIScreen.main.bounds.width, height: CGFloat(UIScreen.main.bounds.height / 2))
+                        .frame(width: UIScreen.main.bounds.width, height: CGFloat(UIScreen.main.bounds.height / 1.5))
                         .scaledToFit()
                 } placeholder: {
                     Image(systemName: "slowmo")
                         .resizable()
-                        .frame(width: UIScreen.main.bounds.width, height: CGFloat(UIScreen.main.bounds.height / 2))
+                        .frame(width: UIScreen.main.bounds.width, height: CGFloat(UIScreen.main.bounds.height / 1.5))
                         .scaledToFit()
                 }
                 
