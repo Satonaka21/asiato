@@ -49,10 +49,14 @@ struct ViewingView: View {
               }
             ).edgesIgnoringSafeArea(.all)
             VStack {
-                Button("kuso"){
-                    ViewController().viewDidLoad()
-                    test.fetchDocumentDataTimesort()
+//                Button("kuso"){
+//                    ViewController().viewDidLoad()
+//                    test.fetchDocumentDataTimesort()
+//                }
+                Button("データを取得"){
+                    viewControllerFireStore.fetchDocumentData()
                 }
+                Text("\(String(postList.description))")
             }
         }
     }

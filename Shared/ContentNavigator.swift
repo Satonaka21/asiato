@@ -2,7 +2,7 @@
 import SwiftUI
 
 struct SwitchingView: View{
-    let viewControllerFireStore = ViewControllerFireStore()
+    let  viewControllerFireStore = ViewControllerFireStore()
     var body: some View{
         TabView{
             ViewingView(postList: viewControllerFireStore.$postList).tabItem {
