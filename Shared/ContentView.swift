@@ -49,7 +49,7 @@ struct ViewingView: View {
               }
             ).edgesIgnoringSafeArea(.all)
             VStack {
-//                Button("kuso"){
+//                Button("test"){
 //                    ViewController().viewDidLoad()
 //                    test.fetchDocumentDataTimesort()
 //                }
