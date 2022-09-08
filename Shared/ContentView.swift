@@ -13,11 +13,12 @@ struct ViewingView: View {
     @ObservedObject private var postViewModel = PostViewModel()
     @ObservedObject private var locationViewModel = LocationViewModel()
     
-    @Binding public var postList: [Report]
+//    @Binding public var postList: [Report]
     
     private let viewControllerFireStore = ViewControllerFireStore()
     private let pinConfig = PinConfig()
     private let test = ViewControllerFireStore()
+//    private let docManager = DocManager()
     
     func dateToString(date: Date) -> String{
         let dateFormatter = DateFormatter()
@@ -33,7 +34,7 @@ struct ViewingView: View {
                 interactionModes: .all,
                 showsUserLocation: true,
                 userTrackingMode: $userTrackingMode,
-                annotationItems: postList,
+                annotationItems: distSortedDoc,
                 annotationContent: { (annotation) in MapAnnotation(coordinate: CLLocationCoordinate2D(
                     latitude: Double(annotation.latitude) ?? 35.0,
                     longitude: Double(annotation.longitude) ?? 135.0
@@ -48,15 +49,23 @@ struct ViewingView: View {
                 }
               }
             ).edgesIgnoringSafeArea(.all)
+            
             VStack {
 //                Button("test"){
 //                    ViewController().viewDidLoad()
 //                    test.fetchDocumentDataTimesort()
 //                }
-                Button("データを取得"){
-                    viewControllerFireStore.fetchDocumentData()
+                Spacer().frame(height: 5)
+                HStack{
+                    Spacer()
+                    Button(action: {
+                        viewControllerFireStore.fetchDocumentData(userLatitude: locationViewModel.getLocation().latitude, userLongitude: locationViewModel.getLocation().longitude)
+                    }, label: {
+                        Image(systemName: "arrow.triangle.2.circlepath")
+                    }).background(Color.white)
+                    Spacer().frame(width: 5)
                 }
-                Text("\(String(postList.description))")
+                Spacer()
             }
         }
     }
@@ -68,6 +77,8 @@ struct PostingView: View {
     @ObservedObject private var locationViewModel = LocationViewModel()
     
     @State var imageData: Data = .init(capacity:0)
+    
+    let viewControllerFireStore = ViewControllerFireStore()
     
     var body: some View {
         ZStack {
@@ -87,6 +98,7 @@ struct PostingView: View {
                             coordinate: locationViewModel.getLocation(),
                             text: sentence
                         )
+                        viewControllerFireStore.fetchDocumentData(userLatitude: locationViewModel.getLocation().latitude, userLongitude: locationViewModel.getLocation().longitude)
                     }).buttonStyle(.borderedProminent).alert( isPresented: $postInfomation.isNotSelected) {
                         Alert(title: Text("Please take a picture."))
                     }

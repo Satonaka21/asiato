@@ -3,9 +3,10 @@ import SwiftUI
 
 struct SwitchingView: View{
     let  viewControllerFireStore = ViewControllerFireStore()
+    
     var body: some View{
         TabView{
-            ViewingView(postList: viewControllerFireStore.$postList).tabItem {
+            ViewingView().tabItem {
                 Image(systemName: "map")
             }
             PostingView().tabItem {

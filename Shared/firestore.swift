@@ -4,7 +4,8 @@
 //
 //  Created by 山北峻佑 on 2022/09/05.
 //
-
+var distSortedDoc:[Report] = []
+var dateSortedDoc:[Report] = []
 
 import UIKit
 import FirebaseCore
@@ -55,13 +56,14 @@ class DateUtils {
 }
 
 class ViewControllerFireStore: UIViewController{
-    @State var postList:[Report] = []
     
-    public func fetchDocumentData(){
+    public func fetchDocumentData(userLatitude: Double, userLongitude: Double){
+        var postList:[Report] = []
         let db = Firestore.firestore()
+//        let docManager = DocManager()
         //現在地に変える
-        let latitude: Double = 34.4827065
-        let longitude: Double = 136.8254649
+        let latitude: Double = userLatitude
+        let longitude: Double = userLongitude
         
         db.collection("post").getDocuments  {(_snapShot, _error) in
             if let snapShot = _snapShot {
@@ -85,20 +87,15 @@ class ViewControllerFireStore: UIViewController{
                 let long_min: Double = longitude - 0.1
                 let long_max: Double = longitude + 0.1
                 
-                self.postList = menuList.filter{ document in
+                postList = menuList.filter{ document in
                     let lat: Double = Double(document.latitude) ?? 0
                     let long: Double = Double(document.longitude) ?? 0
                     return lat_min < lat && lat < lat_max && long_min < long && long < long_max
                 }
-                dump(self.postList)
-                
-                let localPostList = menuList.filter{ document in
-                    let lat: Double = Double(document.latitude) ?? 0
-                    let long: Double = Double(document.longitude) ?? 0
-                    return lat_min < lat && lat < lat_max && long_min < long && long < long_max
-                }
-                
-                dump(localPostList)
+                dump(postList)
+                distSortedDoc = postList
+//                docManager.distSortedDoc = postList
+//                docManager.getDistSortedDoc(doc: postList)
             }else {
                 print("Data Not Found")
             }
@@ -147,35 +144,4 @@ class ViewControllerFireStore: UIViewController{
             }
         }
     }
-    
-    
-//    public func fetchDocumentData() {
-//        let db = Firestore.firestore()
-//        print("関数呼び出し")
-//        db.collection("post").getDocuments  {(_snapShot, _error) in
-//            if let snapShot = _snapShot {
-//                let documents = snapShot.documents
-//                print(documents)
-//                let menuList = documents.compactMap{
-//                    return try? $0.data(as: Report.self)
-//                }
-//                print(menuList)
-//            }else {
-//                print("Data Not Found")
-//            }
-//        }
-//    }
-       // FirestoreのDB取得
-        //        // personsコレクションを取得
-//        db.collection("post").document("LA").setData([
-//            "name": "Los Angeles",
-//            "state": "CA",
-//            "country": "USA"
-//        ]) { err in
-//            if let err = err {
-//                print("Error writing document: \(err)")
-//            }else{
-//                print("Document")
-//            }
-//        }
 }

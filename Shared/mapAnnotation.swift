@@ -16,7 +16,7 @@ import Foundation
 struct PinConfig{
     let frameRadius: CGFloat = 10
     let frameSize: CGFloat = 50
-    let photoSize: CGFloat = 45
+    let photoSize: CGFloat = 40
     let tailWidth: CGFloat = 5
     let tailHeight: CGFloat = 25
 }
@@ -41,7 +41,20 @@ struct PinBase: View{
                     RoundedRectangle(cornerRadius: pinConfig.frameRadius)
                     .fill(Color.blue)
                     .frame(width: pinConfig.frameSize, height: pinConfig.frameSize)
-                    URLImage(url: img_url)
+                    AsyncImage(url: URL(string: img_url)) { image in
+                        image
+                            .resizable()
+                            .frame(width: pinConfig.photoSize, height: pinConfig.photoSize)
+                            .scaledToFill()
+                            .clipped()
+                    } placeholder: {
+                        Image(systemName: "slowmo")
+                            .resizable()
+                            .foregroundColor(Color.white)
+                            .frame(width: pinConfig.photoSize, height: pinConfig.photoSize)
+                            .scaledToFill()
+                            .clipped()
+                    }
                 }
             Triangle()
                 .fill(Color.blue)
