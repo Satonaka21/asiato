@@ -11,7 +11,9 @@ class LocationViewModel: NSObject, ObservableObject, CLLocationManagerDelegate {
     private var authorizationStatus: CLAuthorizationStatus
     private var lastSeenLocation: CLLocation?
     
-    override init() {
+    static let shared = LocationViewModel()
+    
+    override private init() {
         authorizationStatus = locationManager.authorizationStatus
         
         super.init()

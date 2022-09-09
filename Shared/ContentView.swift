@@ -8,7 +8,6 @@ import FirebaseStorage
 
 struct ViewingView: View {
     @State var settingIsActive = false
-    @ObservedObject private var postViewModel = PostViewModel()
     
     var body: some View {
         ZStack{
@@ -30,13 +29,12 @@ struct ViewingView: View {
     }
 }
 
-struct SurchingView: View{
+struct SearchingView: View{
     @State var settingIsActive = false
-    @ObservedObject private var postViewModel = PostViewModel()
     
     var body: some View {
         ZStack{
-            MapView(dataDoc: surchDoc)
+            MapView(dataDoc: searchDoc)
             VStack {
                 Spacer().frame(height: 5)
                 HStack{
@@ -57,10 +55,10 @@ struct SurchingView: View{
 struct MapView: View {
     @State private var userTrackingMode: MapUserTrackingMode = .follow
     @State var settingIsActive = false
-    var dataDoc: [Report]
+    @State var dataDoc: [Report]
     
     @ObservedObject private var postViewModel = PostViewModel()
-    @ObservedObject private var locationViewModel = LocationViewModel()
+    @ObservedObject private var locationViewModel = LocationViewModel.shared
     
     private let viewControllerFireStore = ViewControllerFireStore()
     private let pinConfig = PinConfig()
@@ -68,6 +66,8 @@ struct MapView: View {
     func dateToString(date: Date) -> String{
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy/MM/dd HH:mm:ss"
+        print("called")
+        print(dateFormatter.string(from: date))
         return dateFormatter.string(from: date)
     }
     
@@ -101,8 +101,6 @@ struct MapView: View {
 struct SettingSortView: View {
     @State var startDay = Date()
     @State var endDay = Date()
-    
-    let viewControllerFireStore = ViewControllerFireStore()
     
     @Binding var settingIsActive: Bool
 
@@ -146,7 +144,7 @@ struct SettingSortView: View {
 struct PostingView: View {
     @State private var sentence = ""
     @ObservedObject var postInfomation = PostInfomation()
-    @ObservedObject private var locationViewModel = LocationViewModel()
+    @ObservedObject private var locationViewModel = LocationViewModel.shared
     
     @State var imageData: Data = .init(capacity:0)
     

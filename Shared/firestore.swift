@@ -11,13 +11,17 @@ import FirebaseFirestoreSwift
 import AVFoundation
 import SwiftUI
 
-var surchDoc:[Report] = []
+var searchDoc:[Report] = []
 var viewDoc:[Report] = []
 
 public func docManager() {
     let viewControllerFireStore = ViewControllerFireStore()
     viewControllerFireStore.fetchDocumentDataTimesort()
     viewControllerFireStore.fetchDocumentData()
+//    print("---- searchDoc ----")
+//    dump(searchDoc)
+//    print("---- viewDoc ----")
+//    dump(viewDoc)
 }
     
 //取得するデータを宣言（これも忘れない
@@ -55,7 +59,7 @@ class ViewControllerFireStore: UIViewController{
         var postList:[Report] = []
         let db = Firestore.firestore()
 
-        let locationViewModel = LocationViewModel()
+        let locationViewModel = LocationViewModel.shared
         let viewingView = ViewingView()
         
         //現在地に変える
@@ -99,10 +103,10 @@ class ViewControllerFireStore: UIViewController{
                     let postDatetime = document.datetime
                     return lat_min < lat && lat < lat_max && long_min < long && long < long_max && frontDatetime < postDatetime && postDatetime < backDatetime
                 }
-                dump(postList)
+                
                 viewDoc = postList
-//                docManager.distSortedDoc = postList
-//                docManager.getDistSortedDoc(doc: postList)
+                print("---- viewDoc ----")
+                dump(viewDoc)
             }else {
                 print("Data Not Found")
             }
@@ -129,17 +133,14 @@ class ViewControllerFireStore: UIViewController{
                     let weather: String = data["weather"] as! String
                     return Report(datetime: date, img_url: img_url, latitude: latitude, longitude: longitude, text: text, user_name: user_name, weather: weather)
                 }
-               dump(menuList)
                 
                 let postList = menuList.filter{ document in
                     let postDatetime = document.datetime
                     return Calendar.current.date(byAdding: .day, value: -3, to: Date())! < postDatetime
                 }
-                dump(postList)
-
-                //値は配列になっている。取得は、「配列[index].要素名」で取得することができる。
-                print(menuList[0].datetime)
-                surchDoc = postList
+                searchDoc = postList
+                print("---- searchDoc ----")
+                dump(searchDoc)
             }else {
                 print("Data Not Found")
             }

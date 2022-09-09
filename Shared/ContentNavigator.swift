@@ -11,11 +11,10 @@ struct SwitchingView: View{
                     Image(systemName: "plus.circle")
                     Text("投稿")
                 }
-                SurchingView().tabItem {
+                SearchingView().tabItem {
                     Image(systemName: "magnifyingglass")
                     Text("検索")
                 }
-
                 ViewingView().tabItem {
                     Image(systemName: "mappin.and.ellipse")
                     Text("閲覧")
