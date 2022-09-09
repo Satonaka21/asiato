@@ -35,6 +35,8 @@
 		84832EDA28C036E9007FE746 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84832ED828C036E9007FE746 /* ImagePicker.swift */; };
 		84832EDC28C1D1A1007FE746 /* CameraManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84832EDB28C1D1A1007FE746 /* CameraManager.swift */; };
 		84832EDD28C1D1A2007FE746 /* CameraManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84832EDB28C1D1A1007FE746 /* CameraManager.swift */; };
+		84858BD128CBDBDB00E324F3 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 84858BD028CBDBDB00E324F3 /* GoogleService-Info.plist */; };
+		84858BD228CBDBDB00E324F3 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 84858BD028CBDBDB00E324F3 /* GoogleService-Info.plist */; };
 		848765E828C4298200EAB4F4 /* mapAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848765E728C4298200EAB4F4 /* mapAnnotation.swift */; };
 		848765E928C4298200EAB4F4 /* mapAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848765E728C4298200EAB4F4 /* mapAnnotation.swift */; };
 		848765EB28C43BEC00EAB4F4 /* FiresStoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848765EA28C43BEC00EAB4F4 /* FiresStoreManager.swift */; };
@@ -46,8 +48,6 @@
 		848765F728C44FCC00EAB4F4 /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 848765F628C44FCC00EAB4F4 /* FirebaseFirestoreSwift */; };
 		848765F928C44FCC00EAB4F4 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 848765F828C44FCC00EAB4F4 /* FirebaseStorage */; };
 		848765FB28C44FCC00EAB4F4 /* FirebaseStorageCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = 848765FA28C44FCC00EAB4F4 /* FirebaseStorageCombine-Community */; };
-		84DDB8DF28C60D4B00799188 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 84DDB8DE28C60D4B00799188 /* GoogleService-Info.plist */; };
-		84DDB8E028C60D4B00799188 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 84DDB8DE28C60D4B00799188 /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -66,9 +66,9 @@
 		84832ED528C03159007FE746 /* ContentNavigator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentNavigator.swift; sourceTree = "<group>"; };
 		84832ED828C036E9007FE746 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		84832EDB28C1D1A1007FE746 /* CameraManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraManager.swift; sourceTree = "<group>"; };
+		84858BD028CBDBDB00E324F3 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../GoogleService-Info.plist"; sourceTree = "<group>"; };
 		848765E728C4298200EAB4F4 /* mapAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = mapAnnotation.swift; sourceTree = "<group>"; };
 		848765EA28C43BEC00EAB4F4 /* FiresStoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FiresStoreManager.swift; sourceTree = "<group>"; };
-		84DDB8DE28C60D4B00799188 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -118,7 +118,7 @@
 		841E44C828BCD71F00AE6404 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
-				84DDB8DE28C60D4B00799188 /* GoogleService-Info.plist */,
+				84858BD028CBDBDB00E324F3 /* GoogleService-Info.plist */,
 				841E44C928BCD72000AE6404 /* asiatoApp.swift */,
 				841E44CA28BCD72000AE6404 /* ContentView.swift */,
 				5CA1A3B928C7241E001BF203 /* map.swift */,
@@ -262,7 +262,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				841E44DD28BCD72600AE6404 /* Assets.xcassets in Resources */,
-				84DDB8DF28C60D4B00799188 /* GoogleService-Info.plist in Resources */,
+				84858BD128CBDBDB00E324F3 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -271,7 +271,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				841E44DE28BCD72600AE6404 /* Assets.xcassets in Resources */,
-				84DDB8E028C60D4B00799188 /* GoogleService-Info.plist in Resources */,
+				84858BD228CBDBDB00E324F3 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -106,6 +106,8 @@ struct PopupView: View {
                     Spacer().frame(width: 5)
                 }
                 
+                Spacer().frame(height: 5)
+                
                 HStack(){
                     Spacer().frame(width: 5)
                     Text(text)

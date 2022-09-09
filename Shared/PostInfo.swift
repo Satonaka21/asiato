@@ -16,7 +16,7 @@ class PostInfomation: ObservableObject{
         if(imageData.count != 0){
             // fireStorageに画像をアップロード
             let storage = Storage.storage()
-            let storageRef = storage.reference(forURL: "gs://toratora-dev.appspot.com")
+            let storageRef = storage.reference(forURL: "gs://asiato-80735.appspot.com")
             let randomStr = randomString(length: 20)
             let imageRef = storageRef.child("pic/" + randomStr + ".jpg")
             let uploadTask = imageRef.putData(imageData)

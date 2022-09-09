@@ -35,7 +35,7 @@ struct SwitchingView: View{
                     Text("閲覧")
                 }
             }
-            .navigationBarTitle("asiato", displayMode: .inline)
+            .navigationBarTitle("あしあと", displayMode: .inline)
             .background(NavigationConfigurator { nc in
                 nc.navigationBar.barTintColor = .blue
                 nc.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
