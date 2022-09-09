@@ -10,13 +10,15 @@ class PostInfomation: ObservableObject{
     func postInfo(imageData: Data, coordinate: CLLocationCoordinate2D, text: String) {
         let setPostData = SetPostData()
         let postData = PostData()
+        print("--- post ---")
+        print("size: \(imageData.count)")
         
         if(imageData.count != 0){
             // fireStorageに画像をアップロード
             let storage = Storage.storage()
             let storageRef = storage.reference(forURL: "gs://toratora-dev.appspot.com")
             let randomStr = randomString(length: 20)
-            let imageRef = storageRef.child("pic/" + randomStr + ".png")
+            let imageRef = storageRef.child("pic/" + randomStr + ".jpg")
             let uploadTask = imageRef.putData(imageData)
             var downloadURL: URL?
             

@@ -102,14 +102,13 @@ struct PopupView: View {
                     Spacer().frame(width: 5)
                     Text(userName)
                     Spacer()
-                    Text(datetime).foregroundColor(Color.black)
-                    Text(weather).foregroundColor(Color.black)
+                    Text(datetime)
                     Spacer().frame(width: 5)
                 }
                 
                 HStack(){
                     Spacer().frame(width: 5)
-                    Text(text).foregroundColor(Color.black)
+                    Text(text)
                     Spacer()
                 }
                 Spacer()

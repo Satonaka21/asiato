@@ -235,11 +235,13 @@ struct PostingView: View {
         ZStack {
             VStack{
                 CameraView(imageData: $imageData)
+                Spacer().frame(height: 5)
+                TextField("思い出を書こう", text: $sentence)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .padding()
                 Spacer()
             }
             VStack{
-                Spacer().frame(height: 5)
-                TextField("text", text: $sentence)
                 Spacer()
                 HStack{
                     Spacer()
@@ -251,7 +253,7 @@ struct PostingView: View {
                         )
                         docManager(startDay: modeConfig.startDay, endDay: modeConfig.endDay)
                     }).buttonStyle(.borderedProminent).alert( isPresented: $postInfomation.isNotSelected) {
-                        Alert(title: Text("Please take a picture."))
+                        Alert(title: Text("写真を撮ってください。"))
                     }
                     Spacer().frame(width: 5)
                 }
@@ -263,35 +265,64 @@ struct PostingView: View {
 
 struct CameraView: View {
     @Binding var imageData: Data
-    @State var source:UIImagePickerController.SourceType = .photoLibrary
+    @State var source:UIImagePickerController.SourceType = .camera
     @State var isImagePicker = false
     
     var body: some View {
-        NavigationView{
-            NavigationLink(
-                destination: Imagepicker(show: $isImagePicker, image: $imageData, sourceType: source),
-                isActive:$isImagePicker,
-                label: {
-                    Button(action: {
-                        self.source = .camera
-                        self.isImagePicker.toggle()
-                    }, label: {
-                        if imageData.count != 0{
-                            Image(uiImage: UIImage(data: self.imageData)!)
-                                .resizable()
-                                .scaledToFill()
-                                .clipped()
-                                .frame(width: UIScreen.main.bounds.width, height: CGFloat(UIScreen.main.bounds.height / 2))
-                        } else {
-                            Image(systemName: "camera")
-                                .resizable()
-                                .scaledToFit()
-                                .clipped()
-                                .frame(width: UIScreen.main.bounds.width, height: CGFloat(UIScreen.main.bounds.height / 2))
-                        }
-                    })
+//        NavigationView{
+//            NavigationLink(
+//                destination: Imagepicker(show: $isImagePicker, image: $imageData, sourceType: source),
+//                isActive:$isImagePicker,
+//                label: {
+//                    Button(action: {
+//                        self.source = .camera
+//                        self.isImagePicker.toggle()
+//                    }, label: {
+//                        if imageData.count != 0{
+//                            Image(uiImage: UIImage(data: self.imageData)!)
+//                                .resizable()
+//                                .frame(width: UIScreen.main.bounds.width, height: CGFloat(UIScreen.main.bounds.height / 1.5))
+//                                .scaledToFill()
+//                                .clipped()
+//                        } else {
+//                            VStack{
+//                                Image(systemName: "camera")
+//                                    .resizable()
+//                                    .scaledToFill()
+//                                    .frame(width: CGFloat(UIScreen.main.bounds.width / 5), height: CGFloat(UIScreen.main.bounds.height / 5))
+//                                    .padding(.all, UIScreen.main.bounds.width)
+//                                Text("思い出を撮ろう！")
+//                            }.background(Color.gray)
+//                        }
+//                    })
+//                }
+//            )
+//        }
+        Button(action: {
+            self.source = .camera
+            self.isImagePicker.toggle()
+        }, label: {
+            if imageData.count != 0{
+                Image(uiImage: UIImage(data: self.imageData)!)
+                    .resizable()
+                    .frame(width: UIScreen.main.bounds.width, height: CGFloat(UIScreen.main.bounds.height / 1.5))
+                    .scaledToFill()
+                    .clipped()
+            } else {
+                VStack(alignment: .center){
+                    Image(systemName: "camera")
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: CGFloat(UIScreen.main.bounds.width / 5), height: CGFloat(UIScreen.main.bounds.height / 5))
+                    Text("写真を撮影")
                 }
-            )
+                .frame(width: UIScreen.main.bounds.width, height: CGFloat(UIScreen.main.bounds.height / 1.5))
+                .background(Color.gray)
+            }
+        }).fullScreenCover(
+            isPresented: $isImagePicker
+        ) {
+            Imagepicker(show: $isImagePicker, image: $imageData, sourceType: source)
         }
     }
 }
