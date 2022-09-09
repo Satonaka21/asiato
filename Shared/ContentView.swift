@@ -46,7 +46,7 @@ struct SearchingView: View{
     
     var body: some View {
         ZStack{
-            MapView(chosenDoc: modeConfig.searchDoc).environmentObject(ModeConfig())
+            MapView(chosenDoc: modeConfig.searchDoc).environmentObject(ModeConfig()) // No ObservableObject of type ModeConfig found. A View.environmentObject(_:) for ModeConfig may be missing as an ancestor of this view
             VStack {
                 Spacer().frame(height: 5)
                 HStack{
