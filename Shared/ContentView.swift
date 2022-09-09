@@ -10,9 +10,44 @@ struct ViewingView: View {
     @State var settingIsActive = false
     @EnvironmentObject var modeConfig: ModeConfig
     
+    @State private var userTrackingMode: MapUserTrackingMode = .follow
+    
+    @ObservedObject private var postViewModel = PostViewModel()
+    @ObservedObject private var locationViewModel = LocationViewModel.shared
+    
+    private let viewControllerFireStore = ViewControllerFireStore()
+    private let pinConfig = PinConfig()
+    
+    func dateToString(date: Date) -> String{
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy/MM/dd HH:mm:ss"
+        print("called")
+        print(dateFormatter.string(from: date))
+        return dateFormatter.string(from: date)
+    }
+    
     var body: some View {
         ZStack{
-            MapView(chosenDoc: modeConfig.viewDoc).environmentObject(ModeConfig())
+//            MapView(chosenDoc: modeConfig.viewDoc).environmentObject(ModeConfig())
+            Map(coordinateRegion: $locationViewModel.region,
+                interactionModes: .all,
+                showsUserLocation: true,
+                userTrackingMode: $userTrackingMode,
+                annotationItems: modeConfig.viewDoc,
+                annotationContent: { (annotation) in MapAnnotation(coordinate: CLLocationCoordinate2D(
+                    latitude: Double(annotation.latitude) ?? 35.0,
+                    longitude: Double(annotation.longitude) ?? 135.0
+                )) {
+                    PinBase(
+                        img_url: annotation.img_url,
+                        datetime: dateToString(date: annotation.datetime),
+                        text: annotation.text,
+                        userName: annotation.user_name,
+                        weather: annotation.weather
+                    ).offset(x: 0, y: -0.5*(pinConfig.frameSize + pinConfig.tailHeight))
+                }
+            }
+            ).edgesIgnoringSafeArea(.all)
             VStack {
                 Spacer().frame(height: 5)
                 HStack{
@@ -43,10 +78,44 @@ struct ViewingView: View {
 struct SearchingView: View{
     @State var settingIsActive = false
     @EnvironmentObject var modeConfig: ModeConfig
+    @State private var userTrackingMode: MapUserTrackingMode = .follow
+    
+    @ObservedObject private var postViewModel = PostViewModel()
+    @ObservedObject private var locationViewModel = LocationViewModel.shared
+    
+    private let viewControllerFireStore = ViewControllerFireStore()
+    private let pinConfig = PinConfig()
+    
+    func dateToString(date: Date) -> String{
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy/MM/dd HH:mm:ss"
+        print("called")
+        print(dateFormatter.string(from: date))
+        return dateFormatter.string(from: date)
+    }
     
     var body: some View {
         ZStack{
-            MapView(chosenDoc: modeConfig.searchDoc).environmentObject(ModeConfig()) // No ObservableObject of type ModeConfig found. A View.environmentObject(_:) for ModeConfig may be missing as an ancestor of this view
+//            MapView(chosenDoc: modeConfig.searchDoc).environmentObject(ModeConfig())
+            Map(coordinateRegion: $locationViewModel.region,
+                interactionModes: .all,
+                showsUserLocation: true,
+                userTrackingMode: $userTrackingMode,
+                annotationItems: modeConfig.searchDoc, // No ObservableObject of type ModeConfig found. A View.environmentObject(_:) for ModeConfig may be missing as an ancestor of this view
+                annotationContent: { (annotation) in MapAnnotation(coordinate: CLLocationCoordinate2D(
+                    latitude: Double(annotation.latitude) ?? 35.0,
+                    longitude: Double(annotation.longitude) ?? 135.0
+                )) {
+                    PinBase(
+                        img_url: annotation.img_url,
+                        datetime: dateToString(date: annotation.datetime),
+                        text: annotation.text,
+                        userName: annotation.user_name,
+                        weather: annotation.weather
+                    ).offset(x: 0, y: -0.5*(pinConfig.frameSize + pinConfig.tailHeight))
+                }
+            }
+            ).edgesIgnoringSafeArea(.all)
             VStack {
                 Spacer().frame(height: 5)
                 HStack{
