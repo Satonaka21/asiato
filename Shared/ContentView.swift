@@ -15,6 +15,16 @@ struct ViewingView: View {
             VStack {
                 Spacer().frame(height: 5)
                 HStack{
+                    Spacer().frame(width: 5)
+                    Button(action: {
+                        settingIsActive = true
+                    }, label: {
+                        Image(systemName: "gearshape")
+                    }).background(Color.white)
+                        .fullScreenCover(isPresented: $settingIsActive) {
+                            SettingSortView(settingIsActive: $settingIsActive)
+                        }
+                           
                     Spacer()
                     Button(action: {
                         docManager()
