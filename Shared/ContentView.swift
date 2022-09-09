@@ -8,10 +8,11 @@ import FirebaseStorage
 
 struct ViewingView: View {
     @State var settingIsActive = false
+    @EnvironmentObject var modeConfig: ModeConfig
     
     var body: some View {
         ZStack{
-            MapView(dataDoc: viewDoc)
+            MapView(chosenDoc: modeConfig.viewDoc).environmentObject(ModeConfig())
             VStack {
                 Spacer().frame(height: 5)
                 HStack{
@@ -41,10 +42,11 @@ struct ViewingView: View {
 
 struct SearchingView: View{
     @State var settingIsActive = false
+    @EnvironmentObject var modeConfig: ModeConfig
     
     var body: some View {
         ZStack{
-            MapView(dataDoc: searchDoc)
+            MapView(chosenDoc: modeConfig.searchDoc).environmentObject(ModeConfig())
             VStack {
                 Spacer().frame(height: 5)
                 HStack{
@@ -63,9 +65,9 @@ struct SearchingView: View{
 }
 
 struct MapView: View {
+    @State var chosenDoc:[Report]
     @State private var userTrackingMode: MapUserTrackingMode = .follow
     @State var settingIsActive = false
-    @State var dataDoc: [Report]
     
     @ObservedObject private var postViewModel = PostViewModel()
     @ObservedObject private var locationViewModel = LocationViewModel.shared
@@ -87,7 +89,7 @@ struct MapView: View {
                 interactionModes: .all,
                 showsUserLocation: true,
                 userTrackingMode: $userTrackingMode,
-                annotationItems: dataDoc,
+                annotationItems: chosenDoc,
                 annotationContent: { (annotation) in MapAnnotation(coordinate: CLLocationCoordinate2D(
                     latitude: Double(annotation.latitude) ?? 35.0,
                     longitude: Double(annotation.longitude) ?? 135.0
@@ -109,9 +111,7 @@ struct MapView: View {
 }
 
 struct SettingSortView: View {
-    @State var startDay = Date()
-    @State var endDay = Date()
-    
+    @EnvironmentObject var modeConfig: ModeConfig
     @Binding var settingIsActive: Bool
 
     var body: some View{
@@ -135,10 +135,10 @@ struct SettingSortView: View {
                         VStack {
                             Spacer().frame(height: 5)
                             DatePicker("開始日時",
-                                        selection: $startDay)
+                                       selection: $modeConfig.startDay)
                             Spacer()
                             DatePicker("終了日時",
-                                        selection: $endDay)
+                                       selection: $modeConfig.endDay)
                             Spacer()
                         }
                     }
