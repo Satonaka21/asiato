@@ -33,7 +33,7 @@ struct ViewingView: View {
                 interactionModes: .all,
                 showsUserLocation: true,
                 userTrackingMode: $userTrackingMode,
-                annotationItems: modeConfig.viewDoc,
+                annotationItems: viewDoc,
                 annotationContent: { (annotation) in MapAnnotation(coordinate: CLLocationCoordinate2D(
                     latitude: Double(annotation.latitude) ?? 35.0,
                     longitude: Double(annotation.longitude) ?? 135.0
@@ -63,7 +63,7 @@ struct ViewingView: View {
                            
                     Spacer()
                     Button(action: {
-                        docManager()
+                        docManager(startDay: modeConfig.startDay, endDay: modeConfig.endDay)
                     }, label: {
                         Image(systemName: "arrow.triangle.2.circlepath")
                     }).background(Color.white)
@@ -101,7 +101,7 @@ struct SearchingView: View{
                 interactionModes: .all,
                 showsUserLocation: true,
                 userTrackingMode: $userTrackingMode,
-                annotationItems: modeConfig.searchDoc, // No ObservableObject of type ModeConfig found. A View.environmentObject(_:) for ModeConfig may be missing as an ancestor of this view
+                annotationItems: searchDoc, // No ObservableObject of type ModeConfig found. A View.environmentObject(_:) for ModeConfig may be missing as an ancestor of this view
                 annotationContent: { (annotation) in MapAnnotation(coordinate: CLLocationCoordinate2D(
                     latitude: Double(annotation.latitude) ?? 35.0,
                     longitude: Double(annotation.longitude) ?? 135.0
@@ -121,7 +121,7 @@ struct SearchingView: View{
                 HStack{
                     Spacer()
                     Button(action: {
-                        docManager()
+                        docManager(startDay: modeConfig.startDay, endDay: modeConfig.endDay)
                     }, label: {
                         Image(systemName: "arrow.triangle.2.circlepath")
                     }).background(Color.white)
@@ -188,7 +188,7 @@ struct SettingSortView: View {
             HStack(){
                 Spacer().frame(width: 5)
                 Button(action: {
-                    docManager()
+                    docManager(startDay: modeConfig.startDay, endDay: modeConfig.endDay)
                     settingIsActive = false
                 }, label: {
                     Image(systemName: "xmark.circle")
@@ -226,6 +226,7 @@ struct PostingView: View {
     @ObservedObject private var locationViewModel = LocationViewModel.shared
     
     @State var imageData: Data = .init(capacity:0)
+    @EnvironmentObject var modeConfig: ModeConfig
     
     let viewControllerFireStore = ViewControllerFireStore()
     let viewingView = ViewingView()
@@ -248,7 +249,7 @@ struct PostingView: View {
                             coordinate: locationViewModel.getLocation(),
                             text: sentence
                         )
-                        docManager()
+                        docManager(startDay: modeConfig.startDay, endDay: modeConfig.endDay)
                     }).buttonStyle(.borderedProminent).alert( isPresented: $postInfomation.isNotSelected) {
                         Alert(title: Text("Please take a picture."))
                     }

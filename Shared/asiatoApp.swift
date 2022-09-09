@@ -18,7 +18,7 @@ struct asiatoApp: App {
     
     var body: some Scene {
         WindowGroup {
-            SwitchingView()
+            SwitchingView().environmentObject(ModeConfig())
         }
     }
 }

@@ -14,14 +14,17 @@ import SwiftUI
 class ModeConfig: ObservableObject{
     @Published var startDay = Date()
     @Published var endDay = Date()
-    @Published var searchDoc:[Report] = []
-    @Published var viewDoc:[Report] = []
+//    @Published var searchDoc:[Report] = []
+//    @Published var viewDoc:[Report] = []
 }
 
-public func docManager() {
+var searchDoc:[Report] = []
+var viewDoc:[Report] = []
+
+public func docManager(startDay:Date, endDay:Date) {
     let viewControllerFireStore = ViewControllerFireStore()
     viewControllerFireStore.fetchDocumentDataTimesort()
-    viewControllerFireStore.fetchDocumentData()
+    viewControllerFireStore.fetchDocumentData(startDay: startDay, endDay: endDay)
 //    print("---- searchDoc ----")
 //    dump(searchDoc)
 //    print("---- viewDoc ----")
@@ -58,9 +61,7 @@ class DateUtils {
 }
 
 class ViewControllerFireStore: UIViewController{
-    @EnvironmentObject var modeConfig : ModeConfig
-    
-    public func fetchDocumentData(){
+    public func fetchDocumentData(startDay: Date, endDay: Date){
         var postList:[Report] = []
         let db = Firestore.firestore()
 
@@ -70,9 +71,9 @@ class ViewControllerFireStore: UIViewController{
         let latitude: Double = locationViewModel.getLocation().latitude
         let longitude: Double = locationViewModel.getLocation().longitude
         
-        print(self.modeConfig.startDay, self.modeConfig.endDay)
-        let frontDatetimeString = DateUtils.stringFromDate(date: self.modeConfig.startDay, format: "yyyy/MM/dd HH:mm:ss Z")
-        let backDatetimeString = DateUtils.stringFromDate(date: self.modeConfig.endDay, format: "yyyy/MM/dd HH:mm:ss Z")
+        print(startDay, endDay)
+        let frontDatetimeString = DateUtils.stringFromDate(date: startDay, format: "yyyy/MM/dd HH:mm:ss Z")
+        let backDatetimeString = DateUtils.stringFromDate(date: endDay, format: "yyyy/MM/dd HH:mm:ss Z")
         
         let frontDatetime = DateUtils.dateFromString(string: frontDatetimeString, format: "yyyy/MM/dd HH:mm:ss Z")
         let backDatetime = DateUtils.dateFromString(string: backDatetimeString, format: "yyyy/MM/dd HH:mm:ss Z")
@@ -106,9 +107,9 @@ class ViewControllerFireStore: UIViewController{
                     return lat_min < lat && lat < lat_max && long_min < long && long < long_max && frontDatetime < postDatetime && postDatetime < backDatetime
                 }
                 
-                self.modeConfig.viewDoc = postList
+                viewDoc = postList
                 print("---- viewDoc ----")
-                dump(self.modeConfig.viewDoc)
+                dump(viewDoc)
             }else {
                 print("Data Not Found")
             }
@@ -140,9 +141,9 @@ class ViewControllerFireStore: UIViewController{
                     let postDatetime = document.datetime
                     return Calendar.current.date(byAdding: .day, value: -3, to: Date())! < postDatetime
                 }
-                self.modeConfig.searchDoc = postList
+                searchDoc = postList
                 print("---- searchDoc ----")
-                dump(self.modeConfig.searchDoc)
+                dump(searchDoc)
             }else {
                 print("Data Not Found")
             }
