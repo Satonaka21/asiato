@@ -7,18 +7,10 @@ import AVFoundation
 import FirebaseStorage
 
 struct ViewingView: View {
-    
-    @State private var userTrackingMode: MapUserTrackingMode = .follow
+    @State var settingIsActive = false
     
     @ObservedObject private var postViewModel = PostViewModel()
-    @ObservedObject private var locationViewModel = LocationViewModel()
-    
-//    @Binding public var postList: [Report]
-    
-    private let viewControllerFireStore = ViewControllerFireStore()
-    private let pinConfig = PinConfig()
-    private let test = ViewControllerFireStore()
-//    private let docManager = DocManager()
+//    private let settingSortView = SettingSortView()
     
     func dateToString(date: Date) -> String{
         let dateFormatter = DateFormatter()
@@ -30,36 +22,13 @@ struct ViewingView: View {
     
     var body: some View {
         ZStack{
-            Map(coordinateRegion: $locationViewModel.region,
-                interactionModes: .all,
-                showsUserLocation: true,
-                userTrackingMode: $userTrackingMode,
-                annotationItems: distSortedDoc,
-                annotationContent: { (annotation) in MapAnnotation(coordinate: CLLocationCoordinate2D(
-                    latitude: Double(annotation.latitude) ?? 35.0,
-                    longitude: Double(annotation.longitude) ?? 135.0
-                )) {
-                    PinBase(
-                        img_url: annotation.img_url,
-                        datetime: dateToString(date: annotation.datetime),
-                        text: annotation.text,
-                        userName: annotation.user_name,
-                        weather: annotation.weather
-                    ).offset(x: 0, y: -0.5*(pinConfig.frameSize + pinConfig.tailHeight))
-                }
-              }
-            ).edgesIgnoringSafeArea(.all)
-            
+            MapView(dataDoc: viewDoc)
             VStack {
-//                Button("test"){
-//                    ViewController().viewDidLoad()
-//                    test.fetchDocumentDataTimesort()
-//                }
                 Spacer().frame(height: 5)
                 HStack{
                     Spacer()
                     Button(action: {
-                        viewControllerFireStore.fetchDocumentData(userLatitude: locationViewModel.getLocation().latitude, userLongitude: locationViewModel.getLocation().longitude)
+                        docManager()
                     }, label: {
                         Image(systemName: "arrow.triangle.2.circlepath")
                     }).background(Color.white)
@@ -67,6 +36,91 @@ struct ViewingView: View {
                 }
                 Spacer()
             }
+        }
+    }
+}
+
+struct MapView: View {
+    @State private var userTrackingMode: MapUserTrackingMode = .follow
+    @State var settingIsActive = false
+    var dataDoc: [Report]
+    
+    @ObservedObject private var postViewModel = PostViewModel()
+    @ObservedObject private var locationViewModel = LocationViewModel()
+    
+    private let viewControllerFireStore = ViewControllerFireStore()
+    private let pinConfig = PinConfig()
+    
+    func dateToString(date: Date) -> String{
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy/MM/dd HH:mm:ss"
+        return dateFormatter.string(from: date)
+    }
+    
+    var body: some View {
+        Map(coordinateRegion: $locationViewModel.region,
+            interactionModes: .all,
+            showsUserLocation: true,
+            userTrackingMode: $userTrackingMode,
+            annotationItems: dataDoc,
+            annotationContent: { (annotation) in MapAnnotation(coordinate: CLLocationCoordinate2D(
+                latitude: Double(annotation.latitude) ?? 35.0,
+                longitude: Double(annotation.longitude) ?? 135.0
+            )) {
+                PinBase(
+                    img_url: annotation.img_url,
+                    datetime: dateToString(date: annotation.datetime),
+                    text: annotation.text,
+                    userName: annotation.user_name,
+                    weather: annotation.weather
+                ).offset(x: 0, y: -0.5*(pinConfig.frameSize + pinConfig.tailHeight))
+            }
+          }
+        ).edgesIgnoringSafeArea(.all)
+    }
+}
+
+struct SettingSortView: View {
+    @State var startDay = Date()
+    @State var endDay = Date()
+    
+    let viewControllerFireStore = ViewControllerFireStore()
+    
+    @Binding var settingIsActive: Bool
+
+    var body: some View{
+        VStack{
+            HStack(){
+                Spacer().frame(width: 5)
+                Button(action: {
+                    docManager()
+                    settingIsActive = false
+                }, label: {
+                    Image(systemName: "xmark.circle")
+                })
+                Spacer()
+            }
+            
+            Spacer()
+            
+            HStack(){
+                Form{
+                    Section{
+                        VStack {
+                            Spacer().frame(height: 5)
+                            DatePicker("開始日時",
+                                        selection: $startDay)
+                            Spacer()
+                            DatePicker("終了日時",
+                                        selection: $endDay)
+                            Spacer()
+                        }
+                    }
+                    .pickerStyle(.inline)
+                    .labelsHidden()
+                }
+            }
+            Spacer()
         }
     }
 }
@@ -79,6 +133,7 @@ struct PostingView: View {
     @State var imageData: Data = .init(capacity:0)
     
     let viewControllerFireStore = ViewControllerFireStore()
+    let viewingView = ViewingView()
     
     var body: some View {
         ZStack {
@@ -98,7 +153,7 @@ struct PostingView: View {
                             coordinate: locationViewModel.getLocation(),
                             text: sentence
                         )
-                        viewControllerFireStore.fetchDocumentData(userLatitude: locationViewModel.getLocation().latitude, userLongitude: locationViewModel.getLocation().longitude)
+                        docManager()
                     }).buttonStyle(.borderedProminent).alert( isPresented: $postInfomation.isNotSelected) {
                         Alert(title: Text("Please take a picture."))
                     }
@@ -145,17 +200,32 @@ struct CameraView: View {
     }
 }
 
-struct kariView: View{
+struct SurchingView: View{
+    @State var settingIsActive = false
     @ObservedObject private var postViewModel = PostViewModel()
+
+    func dateToString(date: Date) -> String{
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy/MM/dd HH:mm:ss"
+        return dateFormatter.string(from: date)
+    }
     
     var body: some View {
-        NavigationView{
-            List(postViewModel.posts) {post in VStack(alignment: .leading){
-                Text(post.user_name ?? "cant get").foregroundColor(Color.white)
+        ZStack{
+            MapView(dataDoc: surchDoc)
+            VStack {
+                Spacer().frame(height: 5)
+                HStack{
+                    Spacer()
+                    Button(action: {
+                        docManager()
+                    }, label: {
+                        Image(systemName: "arrow.triangle.2.circlepath")
+                    }).background(Color.white)
+                    Spacer().frame(width: 5)
                 }
-            }.onAppear(){
-                self.postViewModel.getAllData()
-            }.navigationTitle("")
+                Spacer()
+            }
         }
     }
 }

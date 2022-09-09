@@ -4,9 +4,6 @@
 //
 //  Created by 山北峻佑 on 2022/09/05.
 //
-var distSortedDoc:[Report] = []
-var dateSortedDoc:[Report] = []
-
 import UIKit
 import FirebaseCore
 import FirebaseFirestore
@@ -25,6 +22,15 @@ struct Hobby {
     var year: Int
 }
 
+var surchDoc:[Report] = []
+var viewDoc:[Report] = []
+
+public func docManager() {
+    let viewControllerFireStore = ViewControllerFireStore()
+    viewControllerFireStore.fetchDocumentDataTimesort()
+    viewControllerFireStore.fetchDocumentData()
+}
+    
 //取得するデータを宣言（これも忘れない
 struct Report: Codable, Identifiable, Equatable{
     var id = UUID()
@@ -36,7 +42,6 @@ struct Report: Codable, Identifiable, Equatable{
     var user_name: String
     var weather: String
 }
-
 
 //dateとStringの相互変換用class
 class DateUtils {
@@ -56,14 +61,26 @@ class DateUtils {
 }
 
 class ViewControllerFireStore: UIViewController{
-    
-    public func fetchDocumentData(userLatitude: Double, userLongitude: Double){
+
+    public func fetchDocumentData(){
         var postList:[Report] = []
         let db = Firestore.firestore()
-//        let docManager = DocManager()
+
+        let locationViewModel = LocationViewModel()
+        let viewingView = ViewingView()
+        
         //現在地に変える
-        let latitude: Double = userLatitude
-        let longitude: Double = userLongitude
+        let latitude: Double = locationViewModel.getLocation().latitude
+        let longitude: Double = locationViewModel.getLocation().longitude
+        
+        let settingSortView = SettingSortView(settingIsActive: viewingView.$settingIsActive)
+        
+        print(settingSortView.startDay, settingSortView.endDay)
+        let frontDatetimeString = DateUtils.stringFromDate(date: settingSortView.startDay, format: "yyyy/MM/dd HH:mm:ss Z")
+        let backDatetimeString = DateUtils.stringFromDate(date: settingSortView.endDay, format: "yyyy/MM/dd HH:mm:ss Z")
+        
+        let frontDatetime = DateUtils.dateFromString(string: frontDatetimeString, format: "yyyy/MM/dd HH:mm:ss Z")
+        let backDatetime = DateUtils.dateFromString(string: backDatetimeString, format: "yyyy/MM/dd HH:mm:ss Z")
         
         db.collection("post").getDocuments  {(_snapShot, _error) in
             if let snapShot = _snapShot {
@@ -90,10 +107,11 @@ class ViewControllerFireStore: UIViewController{
                 postList = menuList.filter{ document in
                     let lat: Double = Double(document.latitude) ?? 0
                     let long: Double = Double(document.longitude) ?? 0
-                    return lat_min < lat && lat < lat_max && long_min < long && long < long_max
+                    let postDatetime = document.datetime
+                    return lat_min < lat && lat < lat_max && long_min < long && long < long_max && frontDatetime < postDatetime && postDatetime < backDatetime
                 }
                 dump(postList)
-                distSortedDoc = postList
+                viewDoc = postList
 //                docManager.distSortedDoc = postList
 //                docManager.getDistSortedDoc(doc: postList)
             }else {
@@ -104,13 +122,8 @@ class ViewControllerFireStore: UIViewController{
     
     public func fetchDocumentDataTimesort() {
         let db = Firestore.firestore()
-        
+        var nowDate = Date()
         //ここの日付を決めうちじゃなくす
-        let frontDatetimeString = "2022-09-02 00:00:00 +09:00"
-        let backDatetimeString = "2022-09-06 23:59:59 +09:00"
-        
-        let frontDatetime = DateUtils.dateFromString(string: frontDatetimeString, format: "yyyy/MM/dd HH:mm:ss Z")
-        let backDatetime = DateUtils.dateFromString(string: backDatetimeString, format: "yyyy/MM/dd HH:mm:ss Z")
         
         print("関数呼び出し")
         db.collection("post").getDocuments  {(_snapShot, _error) in
@@ -132,13 +145,13 @@ class ViewControllerFireStore: UIViewController{
                 
                 let postList = menuList.filter{ document in
                     let postDatetime = document.datetime
-                    return frontDatetime < postDatetime && postDatetime < backDatetime
+                    return Calendar.current.date(byAdding: .day, value: -3, to: Date())! < postDatetime
                 }
                 dump(postList)
 
                 //値は配列になっている。取得は、「配列[index].要素名」で取得することができる。
                 print(menuList[0].datetime)
-                
+                surchDoc = postList
             }else {
                 print("Data Not Found")
             }

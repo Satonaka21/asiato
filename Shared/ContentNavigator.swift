@@ -5,15 +5,30 @@ struct SwitchingView: View{
     let  viewControllerFireStore = ViewControllerFireStore()
     
     var body: some View{
-        TabView{
-            ViewingView().tabItem {
-                Image(systemName: "map")
+        NavigationView{
+            TabView{
+                PostingView().tabItem {
+                    Image(systemName: "plus.circle")
+                    Text("投稿")
+                }
+                SurchingView().tabItem {
+                    Image(systemName: "magnifyingglass")
+                    Text("検索")
+                }
+
+                ViewingView().tabItem {
+                    Image(systemName: "mappin.and.ellipse")
+                    Text("閲覧")
+                }
             }
-            PostingView().tabItem {
-                Image(systemName: "paperplane")
-            }
-            kariView().tabItem {
-                Image(systemName: "pencil")
+        }
+        .navigationBarTitleDisplayMode(.inline)
+        .navigationTitle("あしあと")
+        .toolbar{
+            ToolbarItem(placement: .navigationBarTrailing){
+                Button(action: {}){
+                    Image(systemName: "gearshape")
+                }
             }
         }
     }
