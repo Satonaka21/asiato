@@ -95,10 +95,10 @@ class ViewControllerFireStore: UIViewController{
                 }
                 
                 //filterをかけた後の処理
-                let lat_min: Double = latitude - 0.1
-                let lat_max: Double = latitude + 0.1
-                let long_min: Double = longitude - 0.1
-                let long_max: Double = longitude + 0.1
+                let lat_min: Double = latitude - 0.0045
+                let lat_max: Double = latitude + 0.0045
+                let long_min: Double = longitude - 0.0045
+                let long_max: Double = longitude + 0.0045
                 
                 postList = menuList.filter{ document in
                     let lat: Double = Double(document.latitude) ?? 0

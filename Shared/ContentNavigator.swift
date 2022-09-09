@@ -1,5 +1,20 @@
 
 import SwiftUI
+import UIKit
+
+struct NavigationConfigurator: UIViewControllerRepresentable {
+    var configure: (UINavigationController) -> Void = { _ in }
+
+    func makeUIViewController(context: UIViewControllerRepresentableContext<NavigationConfigurator>) -> UIViewController {
+        UIViewController()
+    }
+    func updateUIViewController(_ uiViewController: UIViewController, context: UIViewControllerRepresentableContext<NavigationConfigurator>) {
+        if let nc = uiViewController.navigationController {
+            self.configure(nc)
+        }
+    }
+
+}
 
 struct SwitchingView: View{
     let  viewControllerFireStore = ViewControllerFireStore()
@@ -20,16 +35,13 @@ struct SwitchingView: View{
                     Text("閲覧")
                 }
             }
+            .navigationBarTitle("asiato", displayMode: .inline)
+            .background(NavigationConfigurator { nc in
+                nc.navigationBar.barTintColor = .blue
+                nc.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
+            })
         }
-        .navigationBarTitleDisplayMode(.inline)
-        .navigationTitle("あしあと")
-        .toolbar{
-            ToolbarItem(placement: .navigationBarTrailing){
-                Button(action: {}){
-                    Image(systemName: "gearshape")
-                }
-            }
-        }
+        .navigationViewStyle(StackNavigationViewStyle())
     }
 }
 

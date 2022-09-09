@@ -47,7 +47,7 @@ struct ViewingView: View {
                     ).offset(x: 0, y: -0.5*(pinConfig.frameSize + pinConfig.tailHeight))
                 }
             }
-            ).edgesIgnoringSafeArea(.all)
+            )
             VStack {
                 Spacer().frame(height: 5)
                 HStack{
@@ -115,7 +115,7 @@ struct SearchingView: View{
                     ).offset(x: 0, y: -0.5*(pinConfig.frameSize + pinConfig.tailHeight))
                 }
             }
-            ).edgesIgnoringSafeArea(.all)
+            )
             VStack {
                 Spacer().frame(height: 5)
                 HStack{
