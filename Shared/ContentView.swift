@@ -8,21 +8,35 @@ import FirebaseStorage
 
 struct ViewingView: View {
     @State var settingIsActive = false
-    
     @ObservedObject private var postViewModel = PostViewModel()
-//    private let settingSortView = SettingSortView()
-    
-    func dateToString(date: Date) -> String{
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy/MM/dd HH:mm:ss"
-        return dateFormatter.string(from: date)
-    }
-    
-//    private let annotations: [Report] = viewControllerFireStore.postList
     
     var body: some View {
         ZStack{
             MapView(dataDoc: viewDoc)
+            VStack {
+                Spacer().frame(height: 5)
+                HStack{
+                    Spacer()
+                    Button(action: {
+                        docManager()
+                    }, label: {
+                        Image(systemName: "arrow.triangle.2.circlepath")
+                    }).background(Color.white)
+                    Spacer().frame(width: 5)
+                }
+                Spacer()
+            }
+        }
+    }
+}
+
+struct SurchingView: View{
+    @State var settingIsActive = false
+    @ObservedObject private var postViewModel = PostViewModel()
+    
+    var body: some View {
+        ZStack{
+            MapView(dataDoc: surchDoc)
             VStack {
                 Spacer().frame(height: 5)
                 HStack{
@@ -58,25 +72,29 @@ struct MapView: View {
     }
     
     var body: some View {
-        Map(coordinateRegion: $locationViewModel.region,
-            interactionModes: .all,
-            showsUserLocation: true,
-            userTrackingMode: $userTrackingMode,
-            annotationItems: dataDoc,
-            annotationContent: { (annotation) in MapAnnotation(coordinate: CLLocationCoordinate2D(
-                latitude: Double(annotation.latitude) ?? 35.0,
-                longitude: Double(annotation.longitude) ?? 135.0
-            )) {
-                PinBase(
-                    img_url: annotation.img_url,
-                    datetime: dateToString(date: annotation.datetime),
-                    text: annotation.text,
-                    userName: annotation.user_name,
-                    weather: annotation.weather
-                ).offset(x: 0, y: -0.5*(pinConfig.frameSize + pinConfig.tailHeight))
-            }
-          }
-        ).edgesIgnoringSafeArea(.all)
+        HStack{
+            Map(coordinateRegion: $locationViewModel.region,
+                interactionModes: .all,
+                showsUserLocation: true,
+                userTrackingMode: $userTrackingMode,
+                annotationItems: dataDoc,
+                annotationContent: { (annotation) in MapAnnotation(coordinate: CLLocationCoordinate2D(
+                    latitude: Double(annotation.latitude) ?? 35.0,
+                    longitude: Double(annotation.longitude) ?? 135.0
+                )) {
+                    PinBase(
+                        img_url: annotation.img_url,
+                        datetime: dateToString(date: annotation.datetime),
+                        text: annotation.text,
+                        userName: annotation.user_name,
+                        weather: annotation.weather
+                    ).offset(x: 0, y: -0.5*(pinConfig.frameSize + pinConfig.tailHeight))
+                }
+              }
+            ).edgesIgnoringSafeArea(.all)
+        }.onAppear() {
+            locationViewModel.requestPermission()
+        }
     }
 }
 
@@ -196,36 +214,6 @@ struct CameraView: View {
                     })
                 }
             )
-        }
-    }
-}
-
-struct SurchingView: View{
-    @State var settingIsActive = false
-    @ObservedObject private var postViewModel = PostViewModel()
-
-    func dateToString(date: Date) -> String{
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy/MM/dd HH:mm:ss"
-        return dateFormatter.string(from: date)
-    }
-    
-    var body: some View {
-        ZStack{
-            MapView(dataDoc: surchDoc)
-            VStack {
-                Spacer().frame(height: 5)
-                HStack{
-                    Spacer()
-                    Button(action: {
-                        docManager()
-                    }, label: {
-                        Image(systemName: "arrow.triangle.2.circlepath")
-                    }).background(Color.white)
-                    Spacer().frame(width: 5)
-                }
-                Spacer()
-            }
         }
     }
 }

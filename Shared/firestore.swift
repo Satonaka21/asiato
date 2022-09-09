@@ -11,17 +11,6 @@ import FirebaseFirestoreSwift
 import AVFoundation
 import SwiftUI
 
-struct Person {
-    var name: String
-    var age: Int
-    var hobbys: [Hobby]
-}
-
-struct Hobby {
-    var name: String
-    var year: Int
-}
-
 var surchDoc:[Report] = []
 var viewDoc:[Report] = []
 
@@ -122,7 +111,6 @@ class ViewControllerFireStore: UIViewController{
     
     public func fetchDocumentDataTimesort() {
         let db = Firestore.firestore()
-        var nowDate = Date()
         //ここの日付を決めうちじゃなくす
         
         print("関数呼び出し")
