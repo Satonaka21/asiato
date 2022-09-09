@@ -225,6 +225,7 @@ struct PostingView: View {
     @ObservedObject var postInfomation = PostInfomation()
     @ObservedObject private var locationViewModel = LocationViewModel.shared
     
+    @State var isPushed = false
     @State var imageData: Data = .init(capacity:0)
     @EnvironmentObject var modeConfig: ModeConfig
     
@@ -251,9 +252,16 @@ struct PostingView: View {
                             coordinate: locationViewModel.getLocation(),
                             text: sentence
                         )
+                        isPushed.toggle()
                         docManager(startDay: modeConfig.startDay, endDay: modeConfig.endDay)
-                    }).buttonStyle(.borderedProminent).alert( isPresented: $postInfomation.isNotSelected) {
-                        Alert(title: Text("写真を撮ってください。"))
+                    }).buttonStyle(.borderedProminent).alert( isPresented: $isPushed) {
+                        var shownAlert:Alert = Alert(title: Text("写真を撮影してください。"))
+                        if postInfomation.isNotSelected {
+                            shownAlert = Alert(title: Text("写真を撮影してください。"))
+                        } else{
+                            shownAlert = Alert(title: Text("投稿しました！"))
+                        }
+                        return shownAlert
                     }
                     Spacer().frame(width: 5)
                 }
